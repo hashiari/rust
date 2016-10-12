@@ -2,6 +2,25 @@ environment:
   matrix:
   - MSYS_BITS: 64
     CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc
+    CHECK: check
+  - MSYS_BITS: 64
+    CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-rustbuild
+    CHECK: check
+  - MSYS_BITS: 64
+    CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-rustbuild
+    CHECK: check-cargotest
+  - MSYS_BITS: 64
+    CONFIGURE_ARGS: --build=x86_64-pc-windows-gnu
+    CHECK: check
+  - MSYS_BITS: 32
+    CONFIGURE_ARGS: --build=i686-pc-windows-msvc
+    CHECK: check
+  - MSYS_BITS: 32
+    CONFIGURE_ARGS: --build=i686-pc-windows-gnu
+    CHECK: check
+  - MSYS_BITS: 32
+    CONFIGURE_ARGS: --build=i686-pc-windows-gnu --enable-rustbuild
+    CHECK: check
 
 clone_depth: 1
 build: false
@@ -12,7 +31,7 @@ install:
 test_script:
   - sh ./configure %CONFIGURE_ARGS%
   - ps: make -j (nproc)
-  - ps: make check -j (nproc)
+  - ps: make %CHECK% -j (nproc)
 
 cache:
   - build/%TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger
