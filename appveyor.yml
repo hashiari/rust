@@ -10,7 +10,7 @@ install:
   - set PATH=C:\msys64\mingw%MSYS_BITS%\bin;C:\msys64\usr\bin;%PATH%
 
 test_script:
-  - sh ./configure $CONFIGURE_ARGS
+  - sh ./configure %CONFIGURE_ARGS%
   - ps: make -j (nproc)
   - ps: make check -j (nproc)
 
