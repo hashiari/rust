@@ -30,7 +30,7 @@ environment:
   # our own compiler. The `MINGW_URL` below is where to download from and
   # `MINGW_ARCHIVE` is the file we're downloading.
   - MSYS_BITS: 32
-    CONFIGURE_ARGS: --build=i686-pc-windows-gnu
+    CONFIGURE_ARGS: --build=i686-pc-windows-gnu --python=/c/Python27/python.exe
     CHECK: check
     MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-win32/dwarf/i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z/download
     MINGW_ARCHIVE: i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z
@@ -62,8 +62,7 @@ cache:
   - build/%TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger
   - "%TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger"
 
-
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# init:
+#   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
