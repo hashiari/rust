@@ -1,4 +1,7 @@
 environment:
+  global:
+    MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-win32/dwarf/i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z/download
+    MINGW_ARCHIVE: i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z
   matrix:
   - MSYS_BITS: 64
     CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc
@@ -18,15 +21,24 @@ environment:
   - MSYS_BITS: 32
     CONFIGURE_ARGS: --build=i686-pc-windows-gnu
     CHECK: check
+    DOWNLOAD_MINGW: 1
   - MSYS_BITS: 32
     CONFIGURE_ARGS: --build=i686-pc-windows-gnu --enable-rustbuild
     CHECK: check
+    DOWNLOAD_MINGW: 1
 
 clone_depth: 1
 build: false
 
 install:
-  - set PATH=C:\msys64\mingw%MSYS_BITS%\bin;C:\msys64\usr\bin;%PATH%
+  # If we need to download a custom MinGW, do so here and set the path
+  # appropriately
+  - if defined DOWNLOAD_MINGW appveyor DownloadFile "%MINGW_URL%" -FileName "%MINGW_ARCHIVE%"
+  - if defined DOWNLOAD_MINGW  7z x -y "%MINGW_ARCHIVE%" > nul
+  - if defined DOWNLOAD_MINGW set PATH=%CD%\%MINGW_DIR%\bin;C:\msys64\usr\bin;%PATH%
+
+    # Otherwise pull in the MinGW installed on appveyor
+  - if NOT defined DOWNLOAD_MINGW set PATH=C:\msys64\mingw%MSYS_BITS%\bin;C:\msys64\usr\bin;%PATH%
 
 test_script:
   - sh ./configure %CONFIGURE_ARGS%
