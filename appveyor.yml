@@ -60,3 +60,4 @@ test_script:
 
 cache:
   - build/%TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger
+  - %TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger
