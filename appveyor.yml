@@ -1,27 +1,27 @@
 environment:
   matrix:
-  # 32/64 bit MSVC
-  - MSYS_BITS: 64
-    CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc
-    CHECK: check
-  - MSYS_BITS: 32
-    CONFIGURE_ARGS: --build=i686-pc-windows-msvc
-    CHECK: check
-
-  # 64-bit MinGW
-  - MSYS_BITS: 64
-    CONFIGURE_ARGS: --build=x86_64-pc-windows-gnu
-    CHECK: check
-
-  # MSVC rustbuild
-  - MSYS_BITS: 64
-    CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-rustbuild
-    CHECK: check
-
-  # MSVC cargotest
-  - MSYS_BITS: 64
-    CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-rustbuild
-    CHECK: check-cargotest
+  # # 32/64 bit MSVC
+  # - MSYS_BITS: 64
+  #   CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc
+  #   CHECK: check
+  # - MSYS_BITS: 32
+  #   CONFIGURE_ARGS: --build=i686-pc-windows-msvc
+  #   CHECK: check
+  #
+  # # 64-bit MinGW
+  # - MSYS_BITS: 64
+  #   CONFIGURE_ARGS: --build=x86_64-pc-windows-gnu
+  #   CHECK: check
+  #
+  # # MSVC rustbuild
+  # - MSYS_BITS: 64
+  #   CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-rustbuild
+  #   CHECK: check
+  #
+  # # MSVC cargotest
+  # - MSYS_BITS: 64
+  #   CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-rustbuild
+  #   CHECK: check-cargotest
 
   # 32-bit MinGW builds.
   #
@@ -34,11 +34,11 @@ environment:
     CHECK: check
     MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-win32/dwarf/i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z/download
     MINGW_ARCHIVE: i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z
-  - MSYS_BITS: 32
-    CONFIGURE_ARGS: --build=i686-pc-windows-gnu --enable-rustbuild
-    CHECK: check
-    MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-win32/dwarf/i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z/download
-    MINGW_ARCHIVE: i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z
+  # - MSYS_BITS: 32
+  #   CONFIGURE_ARGS: --build=i686-pc-windows-gnu --enable-rustbuild
+  #   CHECK: check
+  #   MINGW_URL: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-win32/dwarf/i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z/download
+  #   MINGW_ARCHIVE: i686-4.9.2-release-win32-dwarf-rt_v4-rev4.7z
 
 clone_depth: 1
 build: false
@@ -61,3 +61,9 @@ test_script:
 cache:
   - build/%TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger
   - "%TARGET%/llvm -> src/rustllvm/llvm-auto-clean-trigger"
+
+
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
